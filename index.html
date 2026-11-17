@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BABY.PLAY // Интерактивный Bento-гид 0–6 мес.</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Unbounded & Manrope -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            canvas: '#F9F8F4',
+            gridLine: '#E4E2DA',
+            ink: '#18181B',
+            subInk: '#3F3F46',
+            skyPastel: '#BAE6FD',
+            lemonPastel: '#FEF08A',
+            mintPastel: '#BBF7D0',
+            lavenderPastel: '#E9D5FF',
+            peachPastel: '#FED7AA',
+          },
+          fontFamily: {
+            display: ['"Unbounded"', 'sans-serif'],
+            sans: ['"Manrope"', 'sans-serif'],
+          },
+          boxShadow: {
+            brutal: '4px 4px 0px #18181B',
+            brutalLg: '6px 6px 0px #18181B',
+            brutalSm: '2px 2px 0px #18181B',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    body {
+      background-color: #F9F8F4;
+      color: #18181B;
+      font-family: 'Manrope', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      /* Subtle architectural dot/grid background */
+      background-image: radial-gradient(#D4D2C8 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    .font-display {
+      font-family: 'Unbounded', sans-serif;
+    }
+
+    /* Tactile Neo-Brutalist Interactive Press Effect */
+    .brutal-btn {
+      border: 2px solid #18181B;
+      box-shadow: 4px 4px 0px #18181B;
+      transition: transform 0.14s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.14s cubic-bezier(0.22, 1, 0.36, 1),
+                  background-color 0.2s ease;
+    }
+    .brutal-btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 5px 5px 0px #18181B;
+    }
+    .brutal-btn:active {
+      transform: translate(3px, 3px);
+      box-shadow: 1px 1px 0px #18181B;
+    }
+
+    .brutal-btn-sm {
+      border: 2px solid #18181B;
+      box-shadow: 2px 2px 0px #18181B;
+      transition: transform 0.14s ease, box-shadow 0.14s ease, background-color 0.2s ease;
+    }
+    .brutal-btn-sm:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0px #18181B;
+    }
+    .brutal-btn-sm:active {
+      transform: translate(2px, 2px);
+      box-shadow: 0px 0px 0px #18181B;
+    }
+
+    .bento-card {
+      border: 2px solid #18181B;
+      box-shadow: 4px 4px 0px #18181B;
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .bento-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px #18181B;
+    }
+
+    /* Kinetic Marquee Banner */
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 28s linear infinite;
+    }
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    /* Randomizer Highlight Pulse */
+    @keyframes spotlightShake {
+      0%, 100% { transform: translate(-2px, -2px) rotate(0deg); }
+      20% { transform: translate(-4px, -4px) rotate(-0.8deg); }
+      40% { transform: translate(0px, -4px) rotate(0.8deg); }
+      60% { transform: translate(-3px, -2px) rotate(-0.5deg); }
+      80% { transform: translate(-1px, -3px) rotate(0.5deg); }
+    }
+    .spotlight-card {
+      animation: spotlightShake 0.55s ease-in-out;
+      outline: 4px solid #18181B;
+      outline-offset: 4px;
+    }
+
+    /* Entrance Animation */
+    @keyframes slideUpBento {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-bento-in {
+      animation: slideUpBento 0.36s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* Custom brutalist checkbox */
+    .brutal-check {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border: 2px solid #18181B;
+      border-radius: 6px;
+      background: #FFFFFF;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background-color 0.15s ease;
+    }
+    .brutal-check:checked {
+      background: #18181B;
+    }
+    .brutal-check:checked::after {
+      content: '';
+      width: 11px;
+      height: 6px;
+      border-left: 2.5px solid #BBF7D0;
+      border-bottom: 2.5px solid #BBF7D0;
+      transform: rotate(-45deg) translate(1px, -1px);
+    }
+
+    /* Hide scrollbar for clean filter bar */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-lemonPastel selection:text-ink">
+
+  <!-- Kinetic Editorial Top Ticker -->
+  <div class="bg-ink text-canvas border-b-2 border-ink py-2 overflow-hidden select-none">
+    <div class="marquee-track text-[11px] font-display font-bold uppercase tracking-widest">
+      <div class="flex items-center gap-6 px-3">
+        <span>BABY.PLAY // 0–6 МЕСЯЦЕВ</span>
+        <span class="w-2 h-2 rounded-full bg-lemonPastel inline-block"></span>
+        <span>12 ПРОВЕРЕННЫХ ИГР И УПРАЖНЕНИЙ</span>
+        <span class="w-2 h-2 rounded-full bg-mintPastel inline-block"></span>
+        <span>БЕЗ СЛОЖНЫХ ПОСОБИЙ</span>
+        <span class="w-2 h-2 rounded-full bg-skyPastel inline-block"></span>
+        <span>НАУЧНЫЙ ПОДХОД К РАННЕМУ РАЗВИТИЮ</span>
+        <span class="w-2 h-2 rounded-full bg-peachPastel inline-block"></span>
+      </div>
+      <div class="flex items-center gap-6 px-3" aria-hidden="true">
+        <span>BABY.PLAY // 0–6 МЕСЯЦЕВ</span>
+        <span class="w-2 h-2 rounded-full bg-lemonPastel inline-block"></span>
+        <span>12 ПРОВЕРЕННЫХ ИГР И УПРАЖНЕНИЙ</span>
+        <span class="w-2 h-2 rounded-full bg-mintPastel inline-block"></span>
+        <span>БЕЗ СЛОЖНЫХ ПОСОБИЙ</span>
+        <span class="w-2 h-2 rounded-full bg-skyPastel inline-block"></span>
+        <span>НАУЧНЫЙ ПОДХОД К РАННЕМУ РАЗВИТИЮ</span>
+        <span class="w-2 h-2 rounded-full bg-peachPastel inline-block"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Asymmetric Bento Hero Dashboard -->
+  <header class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-4">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+      <!-- Bento Tile 1: Main Editorial Masthead (7 cols) -->
+      <div class="lg:col-span-7 bg-white border-2 border-ink rounded-3xl shadow-brutalLg p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden">
+        <div>
+          <div class="flex flex-wrap items-center gap-2 mb-5">
+            <span class="px-3 py-1 rounded-full bg-lemonPastel border-2 border-ink font-display font-extrabold text-[11px] uppercase tracking-wider">
+              ИНТЕРАКТИВНЫЙ ГИД
+            </span>
+            <span class="px-3 py-1 rounded-full bg-lavenderPastel border-2 border-ink font-display font-bold text-[11px] uppercase tracking-wider">
+              0–3 И 3–6 МЕС.
+            </span>
+          </div>
+
+          <h1 class="font-display font-black text-2xl sm:text-4xl xl:text-[40px] leading-[1.12] tracking-tight text-ink mb-4">
+            ИГРЫ И РАЗВИТИЕ МАЛЫША <span class="inline-block bg-skyPastel px-2.5 py-0.5 rounded-xl border-2 border-ink">ПЕРВЫЕ 180 ДНЕЙ</span>
+          </h1>
+
+          <p class="text-sm sm:text-base font-medium text-subInk leading-relaxed max-w-2xl">
+            Структурированная шпаргалка в модульном формате: понятные пошаговые инструкции, научное объяснение пользы каждого навыка и мгновенный подбор игры под текущее настроение малыша.
+          </p>
+        </div>
+
+        <!-- Randomizer CTA Banner inside Hero Tile -->
+        <div class="mt-7 pt-5 border-t-2 border-ink flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+          <div class="text-xs font-bold text-subInk">
+            Не знаете, во что поиграть прямо сейчас? Запустите генератор идеи:
+          </div>
+          <button
+            id="random-game-btn"
+            type="button"
+            class="brutal-btn bg-lemonPastel hover:bg-peachPastel px-5 py-3.5 rounded-2xl font-display font-extrabold text-xs sm:text-sm uppercase tracking-wider text-ink inline-flex items-center justify-center gap-2.5 shrink-0 cursor-pointer"
+          >
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 3 21 3 21 8"></polyline>
+              <line x1="4" y1="20" x2="21" y2="3"></line>
+              <polyline points="21 16 21 21 16 21"></polyline>
+              <line x1="15" y1="15" x2="21" y2="21"></line>
+              <line x1="4" y1="4" x2="9" y2="9"></line>
+            </svg>
+            <span>Игра на сейчас</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Bento Tile 2: Tactile Progress & Stats Widget (5 cols) -->
+      <div class="lg:col-span-5 bg-mintPastel border-2 border-ink rounded-3xl shadow-brutalLg p-6 sm:p-8 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-4">
+            <span class="font-display font-extrabold text-xs uppercase tracking-wider text-ink">
+              ТРЕКЕР ПРОГРЕССА
+            </span>
+            <span
+              id="progress-percent-badge"
+              class="px-3 py-1 rounded-xl bg-ink text-mintPastel font-display font-extrabold text-xs"
+            >
+              0%
+            </span>
+          </div>
+
+          <div class="flex items-baseline gap-2 mb-3">
+            <span id="progress-big-count" class="font-display font-black text-4xl sm:text-5xl text-ink">
+              0
+            </span>
+            <span class="font-display font-bold text-lg text-ink/70">
+              / 12 ОСВОЕНО
+            </span>
+          </div>
+
+          <!-- Brutalist Segmented Progress Bar -->
+          <div class="w-full h-6 bg-white border-2 border-ink rounded-xl p-1 mb-5 overflow-hidden">
+            <div
+              id="progress-fill-bar"
+              class="h-full bg-ink rounded-md transition-all duration-500 ease-out"
+              style="width: 0%"
+            ></div>
+          </div>
+
+          <!-- Age Split Mini-Tiles -->
+          <div class="grid grid-cols-2 gap-3 mb-5">
+            <div class="bg-white border-2 border-ink rounded-2xl p-3">
+              <div class="text-[11px] font-extrabold uppercase tracking-wider text-subInk mb-1">
+                0–3 месяца
+              </div>
+              <div id="stat-0-3" class="font-display font-black text-lg text-ink">
+                0 из 6
+              </div>
+            </div>
+            <div class="bg-white border-2 border-ink rounded-2xl p-3">
+              <div class="text-[11px] font-extrabold uppercase tracking-wider text-subInk mb-1">
+                3–6 месяцев
+              </div>
+              <div id="stat-3-6" class="font-display font-black text-lg text-ink">
+                0 из 6
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Widget Controls -->
+        <div class="pt-4 border-t-2 border-ink flex flex-wrap items-center justify-between gap-3 text-xs font-bold">
+          <label class="inline-flex items-center gap-2.5 cursor-pointer select-none">
+            <input type="checkbox" id="hide-completed-checkbox" class="brutal-check !w-5 !h-5" />
+            <span>Скрыть выполненные</span>
+          </label>
+
+          <button
+            id="reset-progress-trigger"
+            type="button"
+            class="px-3 py-1.5 rounded-xl bg-white border-2 border-ink hover:bg-peachPastel font-extrabold text-[11px] uppercase tracking-wider transition-colors"
+          >
+            Сбросить
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Sticky Control Bar: Age Tabs & Skill Filter Pills -->
+  <nav class="sticky top-0 z-30 bg-canvas/95 backdrop-blur-md border-y-2 border-ink py-3.5 px-4 sm:px-6 lg:px-8 my-2">
+    <div class="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
+
+      <!-- Age Selector Buttons -->
+      <div class="flex items-center gap-2.5 overflow-x-auto no-scrollbar pb-1 lg:pb-0">
+        <button
+          type="button"
+          data-age="all"
+          class="age-filter-btn brutal-btn-sm bg-ink text-white px-4 py-2 rounded-xl font-display font-bold text-xs uppercase tracking-wider whitespace-nowrap"
+        >
+          Все (12)
+        </button>
+        <button
+          type="button"
+          data-age="0-3"
+          class="age-filter-btn brutal-btn-sm bg-white text-ink hover:bg-lemonPastel px-4 py-2 rounded-xl font-display font-bold text-xs uppercase tracking-wider whitespace-nowrap"
+        >
+          0–3 месяца (6)
+        </button>
+        <button
+          type="button"
+          data-age="3-6"
+          class="age-filter-btn brutal-btn-sm bg-white text-ink hover:bg-skyPastel px-4 py-2 rounded-xl font-display font-bold text-xs uppercase tracking-wider whitespace-nowrap"
+        >
+          3–6 месяцев (6)
+        </button>
+      </div>
+
+      <!-- Skill Category Pills -->
+      <div id="skill-filter-bar" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 lg:pb-0">
+        <button
+          type="button"
+          data-skill="all"
+          class="skill-filter-btn brutal-btn-sm bg-ink text-white px-3.5 py-2 rounded-xl font-bold text-xs whitespace-nowrap"
+        >
+          Все навыки
+        </button>
+        <button
+          type="button"
+          data-skill="Моторика"
+          class="skill-filter-btn brutal-btn-sm bg-peachPastel text-ink px-3.5 py-2 rounded-xl font-bold text-xs whitespace-nowrap"
+        >
+          Моторика
+        </button>
+        <button
+          type="button"
+          data-skill="Сенсорика"
+          class="skill-filter-btn brutal-btn-sm bg-lemonPastel text-ink px-3.5 py-2 rounded-xl font-bold text-xs whitespace-nowrap"
+        >
+          Сенсорика
+        </button>
+        <button
+          type="button"
+          data-skill="Речь и слух"
+          class="skill-filter-btn brutal-btn-sm bg-skyPastel text-ink px-3.5 py-2 rounded-xl font-bold text-xs whitespace-nowrap"
+        >
+          Речь и слух
+        </button>
+        <button
+          type="button"
+          data-skill="Эмоции и контакт"
+          class="skill-filter-btn brutal-btn-sm bg-lavenderPastel text-ink px-3.5 py-2 rounded-xl font-bold text-xs whitespace-nowrap"
+        >
+          Эмоции и контакт
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- Main Bento Exercises Grid -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <!-- Status Line -->
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
+      <div class="inline-flex items-center gap-2 bg-white border-2 border-ink rounded-xl px-3.5 py-1.5 shadow-brutalSm">
+        <span class="w-2.5 h-2.5 rounded-full bg-ink"></span>
+        <span id="visible-counter-text" class="font-display font-bold text-xs uppercase tracking-wider">
+          Показано: 12 из 12
+        </span>
+      </div>
+
+      <span class="text-xs font-bold text-subInk">
+        Нажмите на карточку, чтобы открыть полноэкранную шторку для телефона
+      </span>
+    </div>
+
+    <!-- Asymmetric Bento Cards Container -->
+    <div id="bento-grid" class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-7">
+      <!-- Cards injected dynamically -->
+    </div>
+
+    <!-- Empty State Box -->
+    <div
+      id="empty-state-box"
+      class="hidden bg-white border-2 border-ink rounded-3xl shadow-brutalLg p-8 sm:p-12 text-center max-w-xl mx-auto my-8"
+    >
+      <div class="inline-block px-4 py-1.5 rounded-full bg-lemonPastel border-2 border-ink font-display font-extrabold text-xs uppercase mb-4">
+        ПУСТОЙ ФИЛЬТР
+      </div>
+      <h2 class="font-display font-black text-2xl text-ink mb-3">
+        Ни одна карточка не подошла под выбранные условия
+      </h2>
+      <p class="text-sm font-medium text-subInk mb-6">
+        Сбросьте фильтры возраста и навыков или отключите скрытие выполненных упражнений.
+      </p>
+      <button
+        id="clear-all-filters-btn"
+        type="button"
+        class="brutal-btn bg-skyPastel px-6 py-3 rounded-2xl font-display font-extrabold text-xs uppercase tracking-wider text-ink"
+      >
+        Показать все 12 карточек
+      </button>
+    </div>
+  </main>
+
+  <!-- Mobile Bottom Sheet / Quick-View Modal -->
+  <div
+    id="quick-view-modal"
+    class="fixed inset-0 z-50 hidden bg-ink/50 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-6"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div
+      id="quick-view-sheet"
+      class="bg-canvas w-full sm:max-w-2xl max-h-[92vh] sm:max-h-[88vh] rounded-t-3xl sm:rounded-3xl border-t-2 sm:border-2 border-ink shadow-brutalLg flex flex-col overflow-hidden"
+    >
+      <!-- Sheet Top Header -->
+      <div class="px-5 sm:px-7 py-4 bg-white border-b-2 border-ink flex items-center justify-between gap-3 shrink-0">
+        <div class="flex items-center gap-2">
+          <button
+            id="sheet-prev-btn"
+            type="button"
+            class="brutal-btn-sm w-10 h-10 rounded-xl bg-lemonPastel flex items-center justify-center text-ink"
+            title="Предыдущая карточка"
+          >
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button
+            id="sheet-next-btn"
+            type="button"
+            class="brutal-btn-sm w-10 h-10 rounded-xl bg-lemonPastel flex items-center justify-center text-ink"
+            title="Следующая карточка"
+          >
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+          <span id="sheet-index-label" class="font-display font-extrabold text-xs uppercase ml-1">
+            01 / 12
+          </span>
+        </div>
+
+        <button
+          id="sheet-close-btn"
+          type="button"
+          class="brutal-btn-sm px-4 py-2 rounded-xl bg-white hover:bg-peachPastel font-display font-extrabold text-xs uppercase tracking-wider inline-flex items-center gap-1.5"
+        >
+          <span>Закрыть</span>
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Sheet Scrollable Content -->
+      <div id="sheet-body" class="overflow-y-auto p-5 sm:p-7 space-y-5">
+        <!-- Injected dynamically -->
+      </div>
+
+      <!-- Sheet Sticky Bottom Action -->
+      <div id="sheet-footer" class="p-4 sm:px-7 sm:py-5 bg-white border-t-2 border-ink shrink-0">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Brutalist Confirmation Toast for Progress Reset (No confirm/alert) -->
+  <div
+    id="reset-confirm-toast"
+    class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden bg-lemonPastel border-2 border-ink shadow-brutalLg px-5 py-3.5 rounded-2xl flex flex-wrap items-center justify-center gap-4 text-xs font-extrabold max-w-[94vw]"
+  >
+    <span class="uppercase tracking-wide">Сбросить все отметки «Выполнено»?</span>
+    <div class="flex items-center gap-2">
+      <button
+        id="confirm-reset-yes"
+        type="button"
+        class="brutal-btn-sm px-3.5 py-1.5 rounded-xl bg-ink text-white uppercase tracking-wider"
+      >
+        Да, сбросить
+      </button>
+      <button
+        id="confirm-reset-no"
+        type="button"
+        class="brutal-btn-sm px-3.5 py-1.5 rounded-xl bg-white text-ink uppercase tracking-wider"
+      >
+        Отмена
+      </button>
+    </div>
+  </div>
+
+  <!-- Editorial Footer -->
+  <footer class="border-t-2 border-ink bg-white mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div>
+        <div class="font-display font-black text-base uppercase tracking-tight text-ink">
+          BABY.PLAY // BENTO EDITION
+        </div>
+        <p class="text-xs font-medium text-subInk mt-1">
+          Занимайтесь только в период спокойного бодрствования, ориентируясь на сигналы и настроение малыша.
+        </p>
+      </div>
+      <div class="px-3.5 py-1.5 rounded-xl bg-canvas border-2 border-ink text-[11px] font-display font-bold uppercase tracking-wider">
+        Сохранение в браузере
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // =========================================================================
+    // 1. BOLD FLAT EDITORIAL SVG ILLUSTRATIONS (Crisp #18181B strokes, Dopamine Pastels, No Emojis)
+    // =========================================================================
+    const editorialArt = {
+      contrastGeometry: `
+        <svg viewBox="0 0 420 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+          <rect width="420" height="200" fill="#FEF08A"/>
+          <!-- Architectural Grid Lines -->
+          <path d="M0 50 H420 M0 150 H420 M70 0 V200 M350 0 V200" stroke="#18181B" stroke-width="1.2" stroke-opacity="0.16"/>
+          <!-- Left Contrast Card -->
+          <g transform="rotate(-5 148 102)">
+            <rect x="92" y="34" width="112" height="136" rx="14" fill="#FFFFFF" stroke="#18181B" stroke-width="2.5"/>
+            <circle cx="148" cy="102" r="36" fill="#18181B"/>
+            <circle cx="148" cy="102" r="22" fill="#FFFFFF"/>
+            <circle cx="148" cy="102" r="10" fill="#BAE6FD" stroke="#18181B" stroke-width="2"/>
+          </g>
+          <!-- Right Contrast Card -->
+          <g transform="rotate(5 272 102)">
+            <rect x="216" y="34" width="112" height="136" rx="14" fill="#FFFFFF" stroke="#18181B" stroke-width="2.5"/>
+            <rect x="236" y="56" width="34" height="34" fill="#18181B"/>
+            <rect x="274" y="56" width="34" height="34" fill="#BBF7D0" stroke="#18181B" stroke-width="2"/>
+            <rect x="236" y="94" width="34" height="34" fill="#FED7AA" stroke="#18181B" stroke-width="2"/>
+            <rect x="274" y="94" width="34" height="34" fill="#18181B"/>
+            <line x1="236" y1="144" x2="308" y2="144" stroke="#18181B" stroke-width="4" stroke-linecap="round"/>
+          </g>
+          <!-- Editorial Starburst -->
+          <polygon points="210,16 214,26 224,26 216,32 219,42 210,36 201,42 204,32 196,26 206,26" fill="#E9D5FF" stroke="#18181B" stroke-width="2"/>
+        </svg>
+      `,
+      tummyBolster: `
+        <svg viewBox="0 0 420 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+          <rect width="420" height="200" fill="#FED7AA"/>
+          <!-- Mat Base -->
+          <rect x="34" y="152" width="352" height="22" rx="11" fill="#FFFFFF" stroke="#18181B" stroke-width="2.5"/>
+          <!-- Graphic Bolster Cylinder -->
+          <rect x="164" y="118" width="54" height="34" rx="17" fill="#FEF08A" stroke="#18181B" stroke-width="2.5"/>
+          <circle cx="181" cy="135" r="8" fill="#BAE6FD" stroke="#18181B" stroke-width="2"/>
+          <!-- Stylized Flat Editorial Baby Figure -->
+          <path d="M204 114 C244 114 282 126 308 142 C316 147 311 152 300 152 L212 152 Z" fill="#BBF7D0" stroke="#18181B" stroke-width="2.5" stroke-linejoin="round"/>
+          <circle cx="158" cy="86" r="26" fill="#FFFFFF" stroke="#18181B" stroke-width="2.5"/>
+          <circle cx="149" cy="84" r="3" fill="#18181B"/>
+          <circle cx="165" cy="84" r="3" fill="#18181B"/>
+          <path d="M152 94 Q157 99 162 94" stroke="#18181B" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Propped Forearm -->
+          <path d="M168 112 L152 148 L128 148" stroke="#18181B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Target Toy -->
+          <circle cx="88" cy="128" r="20" fill="#E9D5FF" stroke="#18181B" stroke-width="2.5"/>
+          <circle cx="88" cy="128" r="7" fill="#18181B"/>
+        </svg>
+      `,
+      faceDialogue: `
+        <svg viewBox="0 0 420 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+          <rect width="420" height="200" fill="#E9D5FF"/>
+          <!-- Center Focus Frame -->
+          <rect x="74" y="26" width="272" height="148" rx="24" fill="#FFFFFF" stroke="#18181B" stroke-width="2.5"/>
+          <!-- Left Graphic Face -->
+          <circle cx="148" cy="100" r="38" fill="#FEF08A" stroke="#18181B" stroke-width="2.5"/>
+          <circle cx="139" cy="93" r="3.5" fill="#18181B"/>
+          <circle cx="159" cy="93" r="3.5" fill="#18181B"/>
+          <path d="M139 108 Q149 119 159 108" stroke="#18181B" stroke-width="2.8" stroke-linecap="round"/>
+          <!-- Right Graphic Face -->
+          <circle cx="272" cy="104" r="32" fill="#FED7AA" stroke="#18181B" stroke-width="2.5"/>
+          <circle cx="263" cy="98" r="3" fill="#18181B"/>
+          <circle cx="280" cy="98" r="3" fill="#18181B"/>
+          <circle cx="271" cy="111" r="5" fill="#FFFFFF" stroke="#18181B" stroke-width="2.2"/>
+          <!-- Eye-Contact Lightning / Wave Connector -->
+          <path d="M196 92 L208 84 L212 96 L226 88" stroke="#18181B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M198 112 Q210 120 222 112" stroke="#18181B" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      `,
+      tactileWaves: `
+        <svg viewBox="0 0 420 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+          <rect width="420" height="200" fill="#FEF08A"/>
+          <circle cx="210" cy="100" r="76" fill="#FFFFFF" stroke="#18181B" stroke-width="2.5"/>
+          <!-- Tactile Wave Stripes -->
+          <path d="M96 126 Q152 94 210 116 T324 106" stroke="#18181B" stroke-width="3" stroke-linecap="round"/>
+          <path d="M108 144 Q160 116 214 136 T312 126" stroke="#BAE6FD" stroke-width="8" stroke-linecap="round"/>
+          <path d="M108 144 Q160 116 214 136 T312 126" stroke="#18181B" stroke-width="2.2" stroke-linecap="round"/>
+          <!-- Botanical Leaf Shape -->
+          <path d="M164 98 C182 58 228 48 256 64 C242 96 202 110 164 98 Z" fill="#BBF7D0" stroke="#18181B" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M164 98 Q208 80 256 64" stroke="#18181B" stroke-width="2.2" stroke-linecap="round"/>
+          <!-- Floating Tactile Dots -->
+          <circle cx="146" cy="68" r="10" fill="#FED7AA" stroke="#18181B" stroke-width="2.2"/>
+          <circle cx="276" cy="96" r="8" fill="#E9D5FF" stroke="#18181B" stroke-width="2.2"/>
+        </svg>
+      `,
+      rattleMotion: `
+        <svg viewBox="0 0 420 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+          <rect width="420" height="200" fill="#BAE6FD"/>
+          <!-- Arc Path -->
+          <path d="M84 134 Q210 34 336 134" stroke="#18181B" stroke-width="2.5" stroke-dasharray="8 8" stroke-linecap="round"/>
+          <circle cx="90" cy="128" r="16" fill="#FFFFFF" stroke="#18181B" stroke-width="2.2"/>
+          <circle cx="330" cy="128" r="16" fill="#FFFFFF" stroke="#18181B" stroke-width="2.2"/>
+          <!-- Bold Graphic Rattle -->
+          <g transform="rotate(-18 210 86)">
+            <rect x="203" y="88" width="14" height="54" rx="7" fill="#FEF08A" stroke="#18181B" stroke-width="2.5"/>
+            <circle cx="210" cy="66" r="24" fill="#FED7AA" stroke="#18181B" stroke-width="2.5"/>
+            <circle cx="210" cy="66" r="10" fill="#FFFFFF" stroke="#18181B" stroke-width="2.2"/>
+            <circle cx="210" cy="146" r="9" fill="#BBF7D0" stroke="#18181B" stroke-width="2.2"/>
+          </g>
+          <!-- Sound Brackets -->
+          <path d="M168 50 Q158 66 168 82" stroke="#18181B" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M252 50 Q262 66 252 82" stroke="#18181B" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      `,
+      bicycleMotion: `
+        <svg viewBox="0 0 420 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+          <rect width="420" height="200" fill="#FED7AA"/>
+          <rect x="86" y="24" width="248" height="152" rx="28" fill="#FFFFFF" stroke="#18181B" stroke-width="2.5"/>
+          <!-- Interlocking Motion Gears / Loops -->
+          <circle cx="178" cy="100" r="36" fill="#FEF08A" stroke="#18181B" stroke-width="2.5"/>
+          <circle cx="242" cy="100" r="36" fill="#BAE6FD" fill-opacity="0.85" stroke="#18181B" stroke-width="2.5"/>
+          <!-- Graphic Socks / Foot Shapes -->
+          <g transform="rotate(-16 172 86)">
+            <rect x="148" y="74" width="44" height="24" rx="12" fill="#BBF7D0" stroke="#18181B" stroke-width="2.5"/>
+            <line x1="164" y1="74" x2="164" y2="98" stroke="#18181B" stroke-width="2.2"/>
+          </g>
+          <g transform="rotate(14 248 114)">
+            <rect x="226" y="102" width="44" height="24" rx="12" fill="#E9D5FF" stroke="#18181B" stroke-width="2.5"/>
+            <line x1="254" y1="102" x2="254" y2="126" stroke="#18181B" stroke-width="2.2"/>
+          </g>
+        </svg>
+      `,
+      sensoryTray: `
+        <svg viewBox="0 0 420 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+          <rect width="420" height="200" fill="#FEF08A"/>
+          <!-- Bold Bento Bowl -->
+          <path d="M114 114 H306 L284 168 H136 L114 114 Z" fill="#FFFFFF" stroke="#18181B" stroke-width="2.5" stroke-linejoin="round"/>
+          <line x1="122" y1="134" x2="298" y2="134" stroke="#18181B" stroke-width="2"/>
+          <line x1="129" y1="151" x2="291" y2="151" stroke="#18181B" stroke-width="2"/>
+          <!-- Ring -->
+          <circle cx="164" cy="92" r="24" fill="#FED7AA" stroke="#18181B" stroke-width="2.5"/>
+          <circle cx="164" cy="92" r="10" fill="#FEF08A" stroke="#18181B" stroke-width="2.2"/>
+          <!-- Scarf Wave -->
+          <path d="M196 114 C192 76 222 60 234 84 C244 102 226 114 226 114 Z" fill="#BAE6FD" stroke="#18181B" stroke-width="2.5" stroke-linejoin="round"/>
+          <!-- Textured Sphere -->
+          <circle cx="258" cy="94" r="22" fill="#BBF7D0" stroke="#18181B" stroke-width="2.5"/>
+          <circle cx="252" cy="88" r="2.5" fill="#18181B"/>
+          <circle cx="264" cy="91" r="2.5" fill="#18181B"/>
+          <circle cx="257" cy="101" r="2.5" fill="#18181B"/>
+        </svg>
+      `,
+      rollMechanics: `
+        <svg viewBox="0 0 420 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+          <rect width="420" height="200" fill="#FED7AA"/>
+          <line x1="44" y1="154" x2="376" y2="154" stroke="#18181B" stroke-width="3" stroke-linecap="round"/>
+          <!-- Dynamic Rotation Arrow -->
+          <path d="M138 66 C182 34 238 36 270 72" stroke="#18181B" stroke-width="3" stroke-linecap="round"/>
+          <polygon points="274,78 256,74 270,60" fill="#18181B"/>
+          <!-- Rolling Geometric Capsule -->
+          <rect x="108" y="108" width="68" height="36" rx="18" fill="#FFFFFF" stroke="#18181B" stroke-width="2.5"/>
+          <rect x="202" y="86" width="68" height="36" rx="18" transform="rotate(36 202 86)" fill="#BBF7D0" stroke="#18181B" stroke-width="2.5"/>
+          <!-- Target Sphere -->
+          <circle cx="310" cy="132" r="20" fill="#FEF08A" stroke="#18181B" stroke-width="2.5"/>
+          <circle cx="310" cy="132" r="6" fill="#18181B"/>
+        </svg>
+      `,
+      peekabooGraphic: `
+        <svg viewBox="0 0 420 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+          <rect width="420" height="200" fill="#E9D5FF"/>
+          <!-- Sun Character -->
+          <circle cx="210" cy="82" r="38" fill="#FEF08A" stroke="#18181B" stroke-width="2.5"/>
+          <circle cx="198" cy="75" r="3.5" fill="#18181B"/>
+          <circle cx="222" cy="75" r="3.5" fill="#18181B"/>
+          <path d="M200 88 Q210 99 220 88" stroke="#18181B" stroke-width="2.8" stroke-linecap="round"/>
+          <!-- Graphic Draped Cloth -->
+          <path d="M136 98 Q173 86 210 98 Q247 110 284 98 L294 170 Q252 160 210 170 Q168 180 126 170 Z" fill="#BAE6FD" stroke="#18181B" stroke-width="2.5" stroke-linejoin="round"/>
+          <line x1="174" y1="96" x2="168" y2="171" stroke="#18181B" stroke-width="2"/>
+          <line x1="246" y1="100" x2="252" y2="168" stroke="#18181B" stroke-width="2"/>
+        </svg>
+      `,
+      mirrorArch: `
+        <svg viewBox="0 0 420 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+          <rect width="420" height="200" fill="#E9D5FF"/>
+          <!-- Neo-Brutalist Arch Mirror -->
+          <path d="M146 174 V88 C146 53 175 24 210 24 C245 24 274 53 274 88 V174 H146 Z" fill="#FEF08A" stroke="#18181B" stroke-width="2.5"/>
+          <path d="M158 174 V89 C158 60 181 37 210 37 C239 37 262 60 262 89 V174 H158 Z" fill="#FFFFFF" stroke="#18181B" stroke-width="2.5"/>
+          <!-- Diagonal Glass Glare -->
+          <line x1="176" y1="74" x2="198" y2="52" stroke="#18181B" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="174" y1="94" x2="214" y2="54" stroke="#18181B" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Reflection Portrait -->
+          <circle cx="210" cy="116" r="22" fill="#FED7AA" stroke="#18181B" stroke-width="2.5"/>
+          <circle cx="203" cy="113" r="2.5" fill="#18181B"/>
+          <circle cx="217" cy="113" r="2.5" fill="#18181B"/>
+          <path d="M204 123 Q210 128 216 123" stroke="#18181B" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M176 174 C180 152 192 142 210 142 C228 142 240 152 244 174 Z" fill="#BBF7D0" stroke="#18181B" stroke-width="2.5"/>
+        </svg>
+      `,
+      soundBubbles: `
+        <svg viewBox="0 0 420 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+          <rect width="420" height="200" fill="#BAE6FD"/>
+          <!-- Speech Capsule 1 -->
+          <rect x="82" y="42" width="128" height="68" rx="34" fill="#FFFFFF" stroke="#18181B" stroke-width="2.5"/>
+          <path d="M114 76 Q128 60 142 76 T170 76" stroke="#18181B" stroke-width="3" stroke-linecap="round"/>
+          <!-- Speech Capsule 2 -->
+          <rect x="208" y="92" width="128" height="68" rx="34" fill="#FEF08A" stroke="#18181B" stroke-width="2.5"/>
+          <circle cx="250" cy="126" r="5" fill="#18181B"/>
+          <circle cx="272" cy="126" r="5" fill="#18181B"/>
+          <circle cx="294" cy="126" r="5" fill="#18181B"/>
+          <!-- Graphic Note Badge -->
+          <rect x="256" y="34" width="44" height="44" rx="12" fill="#BBF7D0" stroke="#18181B" stroke-width="2.5"/>
+          <circle cx="274" cy="62" r="5" fill="#18181B"/>
+          <path d="M278 62 V46 L288 49" stroke="#18181B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      `,
+      gymReachGraphic: `
+        <svg viewBox="0 0 420 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+          <rect width="420" height="200" fill="#FED7AA"/>
+          <!-- Play Gym Frame -->
+          <path d="M84 176 L134 42 H286 L336 176" stroke="#18181B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Hanging Geometric Mobiles -->
+          <line x1="168" y1="42" x2="168" y2="92" stroke="#18181B" stroke-width="2.5"/>
+          <circle cx="168" cy="108" r="16" fill="#BBF7D0" stroke="#18181B" stroke-width="2.5"/>
+
+          <line x1="210" y1="42" x2="210" y2="104" stroke="#18181B" stroke-width="2.5"/>
+          <circle cx="210" cy="122" r="18" fill="#FEF08A" stroke="#18181B" stroke-width="2.5"/>
+          <circle cx="210" cy="122" r="6" fill="#18181B"/>
+
+          <line x1="252" y1="42" x2="252" y2="88" stroke="#18181B" stroke-width="2.5"/>
+          <polygon points="252,88 236,116 268,116" fill="#BAE6FD" stroke="#18181B" stroke-width="2.5" stroke-linejoin="round"/>
+
+          <!-- Reaching Hand Outline -->
+          <path d="M196 184 L206 150 C208 143 215 143 216 150 L218 160" stroke="#18181B" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>
+      `
+    };
+
+    // =========================================================================
+    // 2. SKILL PALETTE MAP (Dopamine Pastels)
+    // =========================================================================
+    const skillStyles = {
+      'Моторика': {
+        pillBg: 'bg-peachPastel',
+        stepBg: 'bg-peachPastel',
+      },
+      'Сенсорика': {
+        pillBg: 'bg-lemonPastel',
+        stepBg: 'bg-lemonPastel',
+      },
+      'Речь и слух': {
+        pillBg: 'bg-skyPastel',
+        stepBg: 'bg-skyPastel',
+      },
+      'Эмоции и контакт': {
+        pillBg: 'bg-lavenderPastel',
+        stepBg: 'bg-lavenderPastel',
+      },
+    };
+
+    // =========================================================================
+    // 3. 12 STRUCTURED EXERCISES (With Asymmetric Bento Span Hints)
+    // =========================================================================
+    const exercises = [
+      // --- 0–3 МЕСЯЦА ---
+      {
+        id: 'bento-01',
+        num: '01',
+        age: '0-3',
+        ageLabel: '0–3 месяца',
+        skill: 'Сенсорика',
+        spanClass: 'lg:col-span-7',
+        goal: 'Фокусировка взгляда и контрастное зрение',
+        title: 'Контрастные карточки-загадки',
+        illustration: editorialArt.contrastGeometry,
+        whyImportant:
+          'В первые два месяца зрение малыша ещё созревает: ему трудно различать мягкие полутона, зато резкие чёрно-белые узоры на близком расстоянии притягивают взгляд и стимулируют зрительную кору мозга.',
+        materials: ['2–3 контрастные карточки', 'Или лист бумаги с узором маркером'],
+        steps: [
+          'Дождитесь спокойного бодрствования, когда малыш лежит на спине или у вас на руках.',
+          'Расположите карточку в 20–30 см от лица — на этой дистанции фокус наиболее чёткий.',
+          'Подождите 10–15 секунд, пока взгляд сфокусируется, и плавно сместите карточку в сторону.',
+          'Завершите игру через 2–3 минуты, как только ребёнок отведёт глаза.'
+        ]
+      },
+      {
+        id: 'bento-02',
+        num: '02',
+        age: '0-3',
+        ageLabel: '0–3 месяца',
+        skill: 'Моторика',
+        spanClass: 'lg:col-span-5',
+        goal: 'Укрепление мышц шеи, спины и плечевого пояса',
+        title: 'Выкладывание на живот с валиком',
+        illustration: editorialArt.tummyBolster,
+        whyImportant:
+          'Положение на животе — база для всех будущих движений: переворотов, ползания и сидения. Оно укрепляет глубокие мышцы шеи и спины и снижает риск уплощения затылка.',
+        materials: ['Плотный коврик', 'Свёрнутая валиком пелёнка'],
+        steps: [
+          'Подложите мягкий валик из пелёнки под грудь и подмышки малыша для лёгкой опоры на предплечья.',
+          'Опуститесь на один уровень с лицом ребёнка, чтобы он видел ваши глаза.',
+          'Начинайте с 1–2 минут 3–4 раза в день после смены подгузника.',
+          'Постепенно доведите общее время на животе до 15–20 минут в день к трём месяцам.'
+        ]
+      },
+      {
+        id: 'bento-03',
+        num: '03',
+        age: '0-3',
+        ageLabel: '0–3 месяца',
+        skill: 'Эмоции и контакт',
+        spanClass: 'lg:col-span-5',
+        goal: 'Мимика, первая улыбка и базовое доверие',
+        title: 'Диалог лицом к лицу и имитация',
+        illustration: editorialArt.faceDialogue,
+        whyImportant:
+          'Человеческое лицо — главный стимул для новорождённого. Зеркальные нейроны побуждают малыша повторять ваши гримасы и звуки, формируя основу общения и чувство безопасности.',
+        materials: ['Только ваше внимание и зрительный контакт'],
+        steps: [
+          'Расположите своё лицо в 25–30 см от лица ребёнка и поймайте его взгляд.',
+          'Медленно улыбнитесь или вытяните губы трубочкой и выдержите паузу 5–7 секунд.',
+          'Когда малыш повторит движение или издаст звук («агу»), ласково ответьте ему тем же.',
+          'Говорите певучим тоном с выразительными паузами для ответа.'
+        ]
+      },
+      {
+        id: 'bento-04',
+        num: '04',
+        age: '0-3',
+        ageLabel: '0–3 месяца',
+        skill: 'Сенсорика',
+        spanClass: 'lg:col-span-7',
+        goal: 'Тактильная чувствительность и схема тела',
+        title: 'Тёплый массаж «Пальчиковый дождик»',
+        illustration: editorialArt.tactileWaves,
+        whyImportant:
+          'Через уверенные, нежные прикосновения ребёнок осознаёт границы собственного тела. Мягкий массаж снижает уровень стресса, помогает пищеварению и улучшает сон.',
+        materials: ['Тёплые чистые ладони', 'Мягкое полотенце', 'Капля масла без отдушек'],
+        steps: [
+          'Согрейте ладони друг о друга и предупредите малыша спокойным голосом перед началом.',
+          'Выполняйте медленные поглаживания от плеч к кистям и от бёдер к стопам.',
+          'Мягко погладьте животик круговыми движениями по часовой стрелке.',
+          'Завершите лёгким «пальчиковым дождиком» по спинке и стопам.'
+        ]
+      },
+      {
+        id: 'bento-05',
+        num: '05',
+        age: '0-3',
+        ageLabel: '0–3 месяца',
+        skill: 'Речь и слух',
+        spanClass: 'lg:col-span-7',
+        goal: 'Слуховое сосредоточение и слежение взглядом',
+        title: 'Слежение за погремушкой по дуге',
+        illustration: editorialArt.rattleMotion,
+        whyImportant:
+          'Умение плавно переводить взгляд по полукругу тренирует глазодвигательные мышцы и учит мозг связывать источник звука с видимым предметом.',
+        materials: ['Лёгкая погремушка с негромким звуком'],
+        steps: [
+          'Положите малыша на спину и тихо потрясите погремушкой в 30 см над грудью.',
+          'Дождитесь, пока ребёнок найдёт игрушку глазами и зафиксирует взгляд.',
+          'Очень медленно перемещайте погремушку по дуге влево, затем через центр вправо.',
+          'К 2,5–3 месяцам добавьте плавные движения вверх и вниз.'
+        ]
+      },
+      {
+        id: 'bento-06',
+        num: '06',
+        age: '0-3',
+        ageLabel: '0–3 месяца',
+        skill: 'Моторика',
+        spanClass: 'lg:col-span-5',
+        goal: 'Снятие мышечного тонуса и координация',
+        title: 'Велосипед и ладушки стопами',
+        illustration: editorialArt.bicycleMotion,
+        whyImportant:
+          'Мягкие пассивные движения помогают постепенно преодолеть физиологический гипертонус новорождённого, улучшают кровообращение и мягко стимулируют животик.',
+        materials: ['Пеленальный столик или тёплый коврик'],
+        steps: [
+          'Обхватите голени малыша тёплыми ладонями, не сдавливая суставы.',
+          'Поочерёдно сгибайте одну ножку к животику, пока вторая плавно выпрямляется.',
+          'Сделайте 6–8 неспешных циклов под ритмичный стишок или счёт.',
+          'В конце аккуратно соедините стопы малыша вместе, помогая почувствовать симметрию тела.'
+        ]
+      },
+
+      // --- 3–6 МЕСЯЦЕВ ---
+      {
+        id: 'bento-07',
+        num: '07',
+        age: '3-6',
+        ageLabel: '3–6 месяцев',
+        skill: 'Сенсорика',
+        spanClass: 'lg:col-span-5',
+        goal: 'Осознанный захват и тактильное исследование',
+        title: 'Корзинка тактильных сокровищ',
+        illustration: editorialArt.sensoryTray,
+        whyImportant:
+          'После трёх месяцев угасает врождённый рефлекс и появляется осознанный захват. Знакомство с разными фактурами (дерево, ткань, силикон) активно развивает мелкую моторику.',
+        materials: ['Деревянное кольцо', 'Муслиновый платок', 'Силиконовый прорезыватель'],
+        steps: [
+          'Разместите перед малышом 2–3 крупных безопасных предмета разной текстуры.',
+          'Вложите в ладонь деревянное кольцо или дайте потрогать мягкую ткань, называя ощущения.',
+          'Позвольте перекладывать предмет из руки в руку и изучать его форму.',
+          'Меняйте набор предметов раз в 2–3 дня, сохраняя интерес без перегрузки.'
+        ]
+      },
+      {
+        id: 'bento-08',
+        num: '08',
+        age: '3-6',
+        ageLabel: '3–6 месяцев',
+        skill: 'Моторика',
+        spanClass: 'lg:col-span-7',
+        goal: 'Координация корпуса и навык переворота',
+        title: 'Перевороты со спины на живот',
+        illustration: editorialArt.rollMechanics,
+        whyImportant:
+          'Первый самостоятельный переворот требует слаженной работы косых мышц живота, спины и шеи, а также умения переносить центр тяжести через среднюю линию тела.',
+        materials: ['Плотный коврик на полу', 'Любимая яркая игрушка'],
+        steps: [
+          'Положите игрушку сбоку от малыша на расстоянии вытянутой руки, чуть выше плеча.',
+          'Когда ребёнок потянется за ней верхней ручкой, мягко согните противоположную ножку и перенесите через ось тела.',
+          'Сделайте паузу, давая малышу самому завершить поворот плечами и головой.',
+          'Повторите упражнение в другую сторону для симметричного развития.'
+        ]
+      },
+      {
+        id: 'bento-09',
+        num: '09',
+        age: '3-6',
+        ageLabel: '3–6 месяцев',
+        skill: 'Эмоции и контакт',
+        spanClass: 'lg:col-span-7',
+        goal: 'Понимание постоянства объекта и память',
+        title: 'Игра в «Ку-ку» с муслиновым платком',
+        illustration: editorialArt.peekabooGraphic,
+        whyImportant:
+          'Игра учит важнейшему открытию: если человек или предмет скрылся из виду, он не исчез навсегда. Это снижает тревогу разлуки и развивает причинно-следственное мышление.',
+        materials: ['Лёгкая полупрозрачная муслиновая пелёнка или шарфик'],
+        steps: [
+          'Накиньте дышащую пелёнку на своё лицо и спросите: «Где мама? Ку-ку!» — затем стяните с улыбкой.',
+          'Частично прикройте платочком любимую игрушку, оставив край на виду, чтобы малыш сам её стянул.',
+          'На короткую секунду прикройте прозрачной тканью ручку ребёнка и порадуйтесь, когда он её освободит.',
+          'Повторяйте игру с предсказуемой интонацией — малыши обожают узнаваемый сценарий.'
+        ]
+      },
+      {
+        id: 'bento-10',
+        num: '10',
+        age: '3-6',
+        ageLabel: '3–6 месяцев',
+        skill: 'Эмоции и контакт',
+        spanClass: 'lg:col-span-5',
+        goal: 'Зрительное внимание и изучение мимики',
+        title: 'Знакомство с отражением в зеркале',
+        illustration: editorialArt.mirrorArch,
+        whyImportant:
+          'Наблюдение за мимикой и движениями «другого малыша» в зеркале побуждает ребёнка дольше удерживать опору на руках на животе и экспериментировать с эмоциями.',
+        materials: ['Небьющееся детское зеркало'],
+        steps: [
+          'Поставьте небьющееся зеркало перед малышом, когда он лежит на животе на коврике.',
+          'Сядьте рядом так, чтобы в отражении были видны вы оба, и помашите рукой.',
+          'Дотроньтесь до носика или щёчки ребёнка, комментируя вслух.',
+          'Позвольте малышу похлопать ладошкой по гладкому стеклу и поизучать движение.'
+        ]
+      },
+      {
+        id: 'bento-11',
+        num: '11',
+        age: '3-6',
+        ageLabel: '3–6 месяцев',
+        skill: 'Речь и слух',
+        spanClass: 'lg:col-span-5',
+        goal: 'Предречевое развитие, гуление и слух',
+        title: 'Звуковые переклички и потешки',
+        illustration: editorialArt.soundBubbles,
+        whyImportant:
+          'В 3–6 месяцев гуление усложняется, появляются цепочки гласных и первые согласные звуки. Повторение звуков за взрослым тренирует артикуляцию и интонационный слух.',
+        materials: ['Ваш голос и спокойная обстановка без фонового шума'],
+        steps: [
+          'Дождитесь, когда малыш начнёт распевно гулить («а-а-у», «гу-у», «ма-а»).',
+          'Повторите его звуки с той же интонацией, а затем добавьте новый простой слог («ба-ба», «ля-ля»).',
+          'Сопровождайте умывание и потягивания короткими ритмичными потешками.',
+          'Всегда оставляйте тишину после своей фразы, чтобы малыш успел ответить.'
+        ]
+      },
+      {
+        id: 'bento-12',
+        num: '12',
+        age: '3-6',
+        ageLabel: '3–6 месяцев',
+        skill: 'Моторика',
+        spanClass: 'lg:col-span-7',
+        goal: 'Зрительно-моторная координация и захват',
+        title: 'Дотянись и схвати: подвесные игрушки',
+        illustration: editorialArt.gymReachGraphic,
+        whyImportant:
+          'Чтобы дотянуться до висящего предмета, мозг ребёнка учится точно рассчитывать расстояние и согласовывать движение глаз с работой плеча, локтя и раскрытием ладони.',
+        materials: ['Деревянная дуга с подвесками или лента с лёгкими игрушками'],
+        steps: [
+          'Разместите подвесную игрушку над грудью малыша на расстоянии его вытянутой руки.',
+          'Слегка качните игрушку, чтобы привлечь внимание, и дайте ребёнку время прицелиться.',
+          'Сначала малыш будет ударять по предмету кулачком, а затем научится раскрывать ладонь и удерживать его.',
+          'Перевешивайте игрушку чуть левее или правее центра, побуждая работать обеими руками.'
+        ]
+      }
+    ];
+
+    // =========================================================================
+    // 4. STATE & LOCALSTORAGE (Unique Key)
+    // =========================================================================
+    const STORAGE_KEY = 'neobrutal_bento_baby_guide_v3';
+
+    const state = {
+      completedIds: new Set(),
+      selectedAge: 'all',
+      selectedSkill: 'all',
+      hideCompleted: false,
+      activeSheetId: null,
+      highlightedId: null,
+    };
+
+    function loadProgress() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) {
+            state.completedIds = new Set(parsed);
+          }
+        }
+      } catch (err) {
+        console.warn('Не удалось прочитать прогресс:', err);
+      }
+    }
+
+    function saveProgress() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([...state.completedIds]));
+      } catch (err) {
+        console.warn('Не удалось сохранить прогресс:', err);
+      }
+    }
+
+    // =========================================================================
+    // 5. RENDERING ENGINE
+    // =========================================================================
+    const gridEl = document.getElementById('bento-grid');
+    const emptyBoxEl = document.getElementById('empty-state-box');
+    const visibleCounterTextEl = document.getElementById('visible-counter-text');
+
+    // Progress widget elements
+    const progressBigCountEl = document.getElementById('progress-big-count');
+    const progressPercentBadgeEl = document.getElementById('progress-percent-badge');
+    const progressFillBarEl = document.getElementById('progress-fill-bar');
+    const stat03El = document.getElementById('stat-0-3');
+    const stat36El = document.getElementById('stat-3-6');
+
+    // Sheet elements
+    const quickViewModalEl = document.getElementById('quick-view-modal');
+    const sheetBodyEl = document.getElementById('sheet-body');
+    const sheetFooterEl = document.getElementById('sheet-footer');
+    const sheetIndexLabelEl = document.getElementById('sheet-index-label');
+
+    function updateProgressWidget() {
+      const total = exercises.length;
+      const done = state.completedIds.size;
+      const pct = Math.round((done / total) * 100);
+
+      progressBigCountEl.textContent = done;
+      progressPercentBadgeEl.textContent = `${pct}%`;
+      progressFillBarEl.style.width = `${pct}%`;
+
+      const list03 = exercises.filter((e) => e.age === '0-3');
+      const done03 = list03.filter((e) => state.completedIds.has(e.id)).length;
+      stat03El.textContent = `${done03} из ${list03.length}`;
+
+      const list36 = exercises.filter((e) => e.age === '3-6');
+      const done36 = list36.filter((e) => state.completedIds.has(e.id)).length;
+      stat36El.textContent = `${done36} из ${list36.length}`;
+    }
+
+    function getFilteredList() {
+      return exercises.filter((item) => {
+        const okAge = state.selectedAge === 'all' || item.age === state.selectedAge;
+        const okSkill = state.selectedSkill === 'all' || item.skill === state.selectedSkill;
+        const okDone = !state.hideCompleted || !state.completedIds.has(item.id);
+        return okAge && okSkill && okDone;
+      });
+    }
+
+    function renderBentoGrid() {
+      const filtered = getFilteredList();
+
+      visibleCounterTextEl.textContent =
+        filtered.length === exercises.length
+          ? `Показано: все ${exercises.length} карточек`
+          : `Показано: ${filtered.length} из ${exercises.length}`;
+
+      if (filtered.length === 0) {
+        gridEl.innerHTML = '';
+        emptyBoxEl.classList.remove('hidden');
+        return;
+      }
+
+      emptyBoxEl.classList.add('hidden');
+
+      // When filtering narrows results, use balanced 6-col spans so layout always looks intentional
+      const useBalancedSpans = filtered.length < 6;
+
+      gridEl.innerHTML = filtered
+        .map((ex, idx) => {
+          const isDone = state.completedIds.has(ex.id);
+          const isSpotlight = state.highlightedId === ex.id;
+          const style = skillStyles[ex.skill] || skillStyles['Моторика'];
+          const colSpan = useBalancedSpans ? 'lg:col-span-6' : ex.spanClass;
+
+          const materialsChips = ex.materials
+            .map(
+              (mat) => `
+              <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-canvas border-2 border-ink text-xs font-bold text-ink">
+                ${mat}
+              </span>
+            `
+            )
+            .join('');
+
+          const stepsHtml = ex.steps
+            .map(
+              (step, sIdx) => `
+              <li class="flex items-start gap-3 text-sm font-medium text-ink leading-relaxed">
+                <span class="w-6 h-6 rounded-lg ${style.stepBg} border-2 border-ink font-display font-extrabold text-[11px] flex items-center justify-center shrink-0 mt-0.5">
+                  ${sIdx + 1}
+                </span>
+                <span>${step}</span>
+              </li>
+            `
+            )
+            .join('');
+
+          return `
+            <article
+              id="card-${ex.id}"
+              data-id="${ex.id}"
+              style="animation-delay: ${Math.min(idx * 35, 250)}ms"
+              class="bento-card animate-bento-in ${colSpan} rounded-3xl ${
+                isDone ? 'bg-[#F2FBF5]' : 'bg-white'
+              } ${isSpotlight ? 'spotlight-card' : ''} overflow-hidden flex flex-col justify-between"
+            >
+              <div>
+                <!-- Graphic Editorial Illustration Banner (Clickable to open Quick-View Sheet) -->
+                <div
+                  data-open-sheet="${ex.id}"
+                  class="relative aspect-[16/7.8] w-full border-b-2 border-ink overflow-hidden cursor-pointer group"
+                >
+                  ${ex.illustration}
+
+                  <!-- Top Left Index & Age Badge -->
+                  <div class="absolute top-3.5 left-3.5 flex items-center gap-2">
+                    <span class="px-2.5 py-1 rounded-lg bg-ink text-white font-display font-extrabold text-xs">
+                      #${ex.num}
+                    </span>
+                    <span class="px-3 py-1 rounded-lg bg-white border-2 border-ink font-display font-extrabold text-[11px] uppercase tracking-wider text-ink">
+                      ${ex.ageLabel}
+                    </span>
+                  </div>
+
+                  <!-- Top Right Quick-View Trigger -->
+                  <button
+                    type="button"
+                    data-open-sheet="${ex.id}"
+                    class="brutal-btn-sm absolute top-3.5 right-3.5 px-3 py-1.5 rounded-xl bg-white hover:bg-lemonPastel font-display font-extrabold text-[10px] uppercase tracking-wider text-ink inline-flex items-center gap-1.5"
+                    title="Открыть в шторке для чтения со смартфона"
+                  >
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="15 3 21 3 21 9"></polyline>
+                      <polyline points="9 21 3 21 3 15"></polyline>
+                      <line x1="21" y1="3" x2="14" y2="10"></line>
+                      <line x1="3" y1="21" x2="10" y2="14"></line>
+                    </svg>
+                    <span>Шторка</span>
+                  </button>
+                </div>
+
+                <!-- Card Main Body -->
+                <div class="p-5 sm:p-7">
+                  <!-- Skill Tag & Goal -->
+                  <div class="flex flex-wrap items-center gap-2 mb-3">
+                    <span class="px-3 py-1 rounded-lg ${style.pillBg} border-2 border-ink font-display font-extrabold text-[11px] uppercase tracking-wider text-ink">
+                      ${ex.skill}
+                    </span>
+                    <span class="text-xs font-extrabold text-subInk">
+                      // ${ex.goal}
+                    </span>
+                  </div>
+
+                  <!-- Exercise Title -->
+                  <h2
+                    data-open-sheet="${ex.id}"
+                    class="font-display font-black text-xl sm:text-2xl text-ink leading-tight mb-4 cursor-pointer hover:underline decoration-2 underline-offset-4"
+                  >
+                    ${ex.title}
+                  </h2>
+
+                  <!-- Why It Matters Box -->
+                  <div class="bg-canvas border-2 border-ink rounded-2xl p-4 mb-4">
+                    <h3 class="font-display font-extrabold text-[11px] uppercase tracking-wider text-ink mb-1.5">
+                      Почему это важно
+                    </h3>
+                    <p class="text-sm font-medium text-subInk leading-relaxed">
+                      ${ex.whyImportant}
+                    </p>
+                  </div>
+
+                  <!-- Materials Needed -->
+                  <div class="mb-5">
+                    <h3 class="font-display font-extrabold text-[11px] uppercase tracking-wider text-ink mb-2">
+                      Что понадобится
+                    </h3>
+                    <div class="flex flex-wrap gap-1.5">
+                      ${materialsChips}
+                    </div>
+                  </div>
+
+                  <!-- Numbered Step-by-Step Instructions -->
+                  <div>
+                    <h3 class="font-display font-extrabold text-[11px] uppercase tracking-wider text-ink mb-2.5">
+                      Пошаговая инструкция
+                    </h3>
+                    <ol class="space-y-2.5">
+                      ${stepsHtml}
+                    </ol>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tactile Completion Action Footer -->
+              <div class="px-5 sm:px-7 py-4 border-t-2 border-ink bg-canvas/70 flex items-center justify-between gap-3">
+                <label class="inline-flex items-center gap-3 cursor-pointer select-none w-full">
+                  <input
+                    type="checkbox"
+                    data-toggle-complete="${ex.id}"
+                    class="brutal-check"
+                    ${isDone ? 'checked' : ''}
+                  />
+                  <span class="font-display font-extrabold text-xs uppercase tracking-wider ${
+                    isDone ? 'text-ink' : 'text-subInk'
+                  }">
+                    ${isDone ? 'Выполнено // Освоено' : 'Отметить выполненным'}
+                  </span>
+                </label>
+
+                ${
+                  isDone
+                    ? `<span class="px-2.5 py-1 rounded-lg bg-mintPastel border-2 border-ink font-display font-extrabold text-[10px] uppercase shrink-0">
+                        ГОТОВО
+                      </span>`
+                    : ''
+                }
+              </div>
+            </article>
+          `;
+        })
+        .join('');
+    }
+
+    // =========================================================================
+    // 6. QUICK-VIEW BOTTOM SHEET (Smartphone-optimized reading drawer)
+    // =========================================================================
+    function renderQuickViewSheet() {
+      if (!state.activeSheetId) {
+        quickViewModalEl.classList.add('hidden');
+        document.body.style.overflow = '';
+        return;
+      }
+
+      const pool = getFilteredList().length > 0 ? getFilteredList() : exercises;
+      let idx = pool.findIndex((item) => item.id === state.activeSheetId);
+      if (idx === -1) {
+        idx = 0;
+        state.activeSheetId = pool[0].id;
+      }
+
+      const ex = pool[idx];
+      const isDone = state.completedIds.has(ex.id);
+      const style = skillStyles[ex.skill] || skillStyles['Моторика'];
+
+      sheetIndexLabelEl.textContent = `${String(idx + 1).padStart(2, '0')} / ${String(pool.length).padStart(2, '0')}`;
+
+      const materialsChips = ex.materials
+        .map(
+          (mat) => `
+          <span class="inline-flex items-center px-3 py-1.5 rounded-xl bg-white border-2 border-ink text-xs font-extrabold text-ink">
+            ${mat}
+          </span>
+        `
+        )
+        .join('');
+
+      const stepsHtml = ex.steps
+        .map(
+          (step, sIdx) => `
+          <li class="flex items-start gap-3.5 text-sm sm:text-base font-medium text-ink leading-relaxed bg-white border-2 border-ink rounded-2xl p-3.5 shadow-brutalSm">
+            <span class="w-7 h-7 rounded-lg ${style.stepBg} border-2 border-ink font-display font-extrabold text-xs flex items-center justify-center shrink-0 mt-0.5">
+              ${sIdx + 1}
+            </span>
+            <span>${step}</span>
+          </li>
+        `
+        )
+        .join('');
+
+      sheetBodyEl.innerHTML = `
+        <div class="rounded-2xl overflow-hidden border-2 border-ink shadow-brutal aspect-[16/7.8]">
+          ${ex.illustration}
+        </div>
+
+        <div>
+          <div class="flex flex-wrap items-center gap-2 mb-3">
+            <span class="px-2.5 py-1 rounded-lg bg-ink text-white font-display font-extrabold text-xs">
+              #${ex.num}
+            </span>
+            <span class="px-3 py-1 rounded-lg bg-white border-2 border-ink font-display font-extrabold text-xs uppercase">
+              ${ex.ageLabel}
+            </span>
+            <span class="px-3 py-1 rounded-lg ${style.pillBg} border-2 border-ink font-display font-extrabold text-xs uppercase">
+              ${ex.skill}
+            </span>
+          </div>
+
+          <h2 class="font-display font-black text-2xl sm:text-3xl text-ink leading-tight mb-2">
+            ${ex.title}
+          </h2>
+          <p class="text-sm font-extrabold text-subInk">
+            Цель: ${ex.goal}
+          </p>
+        </div>
+
+        <div class="bg-white border-2 border-ink rounded-2xl p-4 shadow-brutalSm">
+          <h3 class="font-display font-extrabold text-xs uppercase tracking-wider text-ink mb-1.5">
+            Почему это важно
+          </h3>
+          <p class="text-sm font-medium text-subInk leading-relaxed">
+            ${ex.whyImportant}
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-display font-extrabold text-xs uppercase tracking-wider text-ink mb-2">
+            Что понадобится
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            ${materialsChips}
+          </div>
+        </div>
+
+        <div>
+          <h3 class="font-display font-extrabold text-xs uppercase tracking-wider text-ink mb-2.5">
+            Пошаговая инструкция
+          </h3>
+          <ol class="space-y-2.5">
+            ${stepsHtml}
+          </ol>
+        </div>
+      `;
+
+      sheetFooterEl.innerHTML = `
+        <button
+          type="button"
+          data-sheet-toggle-complete="${ex.id}"
+          class="brutal-btn w-full py-3.5 px-5 rounded-2xl font-display font-extrabold text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-3 cursor-pointer ${
+            isDone ? 'bg-mintPastel text-ink' : 'bg-lemonPastel text-ink'
+          }"
+        >
+          <span class="w-6 h-6 rounded-md border-2 border-ink flex items-center justify-center ${
+            isDone ? 'bg-ink text-mintPastel' : 'bg-white'
+          }">
+            ${
+              isDone
+                ? `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>`
+                : ''
+            }
+          </span>
+          <span>${isDone ? 'Выполнено // Снять отметку' : 'Отметить выполненным'}</span>
+        </button>
+      `;
+
+      quickViewModalEl.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function stepSheet(delta) {
+      if (!state.activeSheetId) return;
+      const pool = getFilteredList().length > 0 ? getFilteredList() : exercises;
+      const cur = pool.findIndex((item) => item.id === state.activeSheetId);
+      const next = (cur + delta + pool.length) % pool.length;
+      state.activeSheetId = pool[next].id;
+      sheetBodyEl.scrollTop = 0;
+      renderQuickViewSheet();
+    }
+
+    // =========================================================================
+    // 7. RANDOMIZER ("ИГРА НА СЕЙЧАС")
+    // =========================================================================
+    function pickRandomGame() {
+      let pool = getFilteredList();
+      if (pool.length === 0) {
+        // Fallback to all uncompleted or all exercises
+        const uncompleted = exercises.filter((e) => !state.completedIds.has(e.id));
+        pool = uncompleted.length > 0 ? uncompleted : exercises;
+        // Reset filters so the chosen card is visible
+        state.selectedAge = 'all';
+        state.selectedSkill = 'all';
+        state.hideCompleted = false;
+        document.getElementById('hide-completed-checkbox').checked = false;
+        syncFilterButtonUI();
+      } else {
+        // Prefer uncompleted within active filter if available
+        const uncompletedInPool = pool.filter((e) => !state.completedIds.has(e.id));
+        if (uncompletedInPool.length > 0) {
+          pool = uncompletedInPool;
+        }
+      }
+
+      // Avoid picking the same card twice in a row if possible
+      const candidates =
+        pool.length > 1 ? pool.filter((item) => item.id !== state.highlightedId) : pool;
+      const chosen = candidates[Math.floor(Math.random() * candidates.length)];
+
+      state.highlightedId = chosen.id;
+      renderBentoGrid();
+
+      // Smoothly scroll to the spotlighted card
+      requestAnimationFrame(() => {
+        const cardEl = document.getElementById(`card-${chosen.id}`);
+        if (cardEl) {
+          cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    }
+
+    // =========================================================================
+    // 8. EVENT LISTENERS & UI SYNC
+    // =========================================================================
+    function syncFilterButtonUI() {
+      document.querySelectorAll('.age-filter-btn').forEach((btn) => {
+        const active = btn.getAttribute('data-age') === state.selectedAge;
+        btn.classList.toggle('bg-ink', active);
+        btn.classList.toggle('text-white', active);
+        btn.classList.toggle('bg-white', !active);
+        btn.classList.toggle('text-ink', !active);
+      });
+
+      document.querySelectorAll('.skill-filter-btn').forEach((btn) => {
+        const skill = btn.getAttribute('data-skill');
+        const active = skill === state.selectedSkill;
+        btn.classList.toggle('ring-2', active && skill !== 'all');
+        btn.classList.toggle('ring-ink', active && skill !== 'all');
+        btn.classList.toggle('ring-offset-2', active && skill !== 'all');
+
+        if (skill === 'all') {
+          btn.classList.toggle('bg-ink', active);
+          btn.classList.toggle('text-white', active);
+          btn.classList.toggle('bg-white', !active);
+          btn.classList.toggle('text-ink', !active);
+        }
+      });
+    }
+
+    // Toggle completion in Grid
+    gridEl.addEventListener('change', (e) => {
+      if (e.target.matches('[data-toggle-complete]')) {
+        const id = e.target.getAttribute('data-toggle-complete');
+        if (e.target.checked) {
+          state.completedIds.add(id);
+        } else {
+          state.completedIds.delete(id);
+        }
+        saveProgress();
+        updateProgressWidget();
+        renderBentoGrid();
+      }
+    });
+
+    // Open Quick-View Sheet from Grid
+    gridEl.addEventListener('click', (e) => {
+      if (e.target.closest('label') || e.target.matches('input')) return;
+      const trigger = e.target.closest('[data-open-sheet]');
+      if (trigger) {
+        state.activeSheetId = trigger.getAttribute('data-open-sheet');
+        renderQuickViewSheet();
+      }
+    });
+
+    // Quick-View Sheet interactions
+    quickViewModalEl.addEventListener('click', (e) => {
+      if (e.target === quickViewModalEl) {
+        state.activeSheetId = null;
+        renderQuickViewSheet();
+        return;
+      }
+      const toggleBtn = e.target.closest('[data-sheet-toggle-complete]');
+      if (toggleBtn) {
+        const id = toggleBtn.getAttribute('data-sheet-toggle-complete');
+        if (state.completedIds.has(id)) {
+          state.completedIds.delete(id);
+        } else {
+          state.completedIds.add(id);
+        }
+        saveProgress();
+        updateProgressWidget();
+        renderBentoGrid();
+        renderQuickViewSheet();
+      }
+    });
+
+    document.getElementById('sheet-close-btn').addEventListener('click', () => {
+      state.activeSheetId = null;
+      renderQuickViewSheet();
+    });
+    document.getElementById('sheet-prev-btn').addEventListener('click', () => stepSheet(-1));
+    document.getElementById('sheet-next-btn').addEventListener('click', () => stepSheet(1));
+
+    document.addEventListener('keydown', (e) => {
+      if (!state.activeSheetId) return;
+      if (e.key === 'Escape') {
+        state.activeSheetId = null;
+        renderQuickViewSheet();
+      } else if (e.key === 'ArrowRight') {
+        stepSheet(1);
+      } else if (e.key === 'ArrowLeft') {
+        stepSheet(-1);
+      }
+    });
+
+    // Randomizer button
+    document.getElementById('random-game-btn').addEventListener('click', pickRandomGame);
+
+    // Age filter clicks
+    document.querySelectorAll('.age-filter-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.selectedAge = btn.getAttribute('data-age');
+        state.highlightedId = null;
+        syncFilterButtonUI();
+        renderBentoGrid();
+      });
+    });
+
+    // Skill filter clicks
+    document.querySelectorAll('.skill-filter-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.selectedSkill = btn.getAttribute('data-skill');
+        state.highlightedId = null;
+        syncFilterButtonUI();
+        renderBentoGrid();
+      });
+    });
+
+    // Hide completed checkbox
+    const hideCompletedCheckbox = document.getElementById('hide-completed-checkbox');
+    hideCompletedCheckbox.addEventListener('change', (e) => {
+      state.hideCompleted = e.target.checked;
+      renderBentoGrid();
+    });
+
+    // Clear all filters button
+    document.getElementById('clear-all-filters-btn').addEventListener('click', () => {
+      state.selectedAge = 'all';
+      state.selectedSkill = 'all';
+      state.hideCompleted = false;
+      state.highlightedId = null;
+      hideCompletedCheckbox.checked = false;
+      syncFilterButtonUI();
+      renderBentoGrid();
+    });
+
+    // Reset progress toast (no confirm/alert)
+    const resetConfirmToastEl = document.getElementById('reset-confirm-toast');
+    document.getElementById('reset-progress-trigger').addEventListener('click', () => {
+      if (state.completedIds.size === 0) return;
+      resetConfirmToastEl.classList.remove('hidden');
+    });
+    document.getElementById('confirm-reset-no').addEventListener('click', () => {
+      resetConfirmToastEl.classList.add('hidden');
+    });
+    document.getElementById('confirm-reset-yes').addEventListener('click', () => {
+      state.completedIds.clear();
+      saveProgress();
+      updateProgressWidget();
+      renderBentoGrid();
+      if (state.activeSheetId) renderQuickViewSheet();
+      resetConfirmToastEl.classList.add('hidden');
+    });
+
+    // =========================================================================
+    // 9. BOOTSTRAP
+    // =========================================================================
+    loadProgress();
+    updateProgressWidget();
+    syncFilterButtonUI();
+    renderBentoGrid();
+  </script>
+</body>
+</html>
